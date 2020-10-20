@@ -1,0 +1,78 @@
+{% load my_filters %}
+
+
+<!DOCTYPE html>{% load static %}
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Инфляция в России</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body>
+    {% block content %}
+      <div class="row">
+        <h1 class="col s12">Инфляция в России</h1>
+        <div class="col s12 m8">
+        
+        <!-- Ваша логика -->
+          <!-- Заголовки таблицы -->
+
+          <table>
+            <tr>
+            {% for cell in title|list_split %}
+              {% if not forloop.last %}
+                <td><b>{{ cell }}</b></td>
+              {% else %}
+                <td bgcolor="gray"><b>{{ cell }}</b></td>
+              {% endif %}
+            {% endfor %}
+            </tr>
+
+          <!-- тело таблицы -->
+
+          {% for inflation in inflation_list %}
+            <tr align="center">
+
+                {% for cell in inflation|list_split %}
+                  {% if cell == '' %}
+                    <td> - </td>
+                  {% else %}
+                    {% if not forloop.last %}
+                      {% if not forloop.first %}
+                        {% if cell|float_make >= 1 and cell|float_make < 2 %}
+                          <td bgcolor="pink">{{ cell }}</td>
+                        {% elif cell|float_make >= 2 and cell|float_make < 5 %}
+                          <td bgcolor="lightcoral">{{ cell }}</td>
+                        {% elif cell|float_make >= 5 %}
+                          <td bgcolor="red">{{ cell }}</td>
+                        {% elif cell < '0.00' and not cell == '' %}
+                          <td bgcolor="green">{{ cell }}</td>
+                        {% else %}
+                          <td>{{ cell }}</td>
+                        {% endif %}
+                      {% else %}
+                        <td>{{ cell }}</td>
+                      {% endif %}
+                    {% else %}
+                      <td bgcolor="gray">{{ cell }}</td>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+
+            </tr>
+          {% endfor %}
+          </table>>
+        <!-- Ваша логика -->
+        </div>
+      </div>
+    {% endblock %}
+
+  </body>
+</html>
